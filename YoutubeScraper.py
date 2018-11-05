@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as BS4
 import requests
 from pytube import YouTube
 from pytube.exceptions import VideoUnavailable
-
+from pytube.exceptions import LiveStreamError
 
 class YoutubeScraper():
     def __init__(self):
