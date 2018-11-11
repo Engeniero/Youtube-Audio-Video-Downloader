@@ -3,6 +3,7 @@ import requests
 from pytube import YouTube
 from pytube.exceptions import VideoUnavailable
 from pytube.exceptions import LiveStreamError
+from pytube.exceptions import RegexMatchError
 
 class YoutubeScraper():
     def __init__(self):
@@ -16,6 +17,7 @@ class YoutubeScraper():
 
         if choice == 1:
              URL = input("Insert Url ")
+
              while True:
                  try:
                      choice = int(input("\nChose 0 for exit the program \n""Chose 1 for download the video or 2 for download the sound of the video: "))
@@ -79,6 +81,8 @@ class YoutubeScraper():
                 print("Video Not found,Continue Searching")
             except LiveStreamError:
                 print("Video is in Live Streaming, Continue Searching")
+            except RegexMatchError:
+                print("Video CopyRighted, you can't download it!")
         return dic
 
     def PrintVideoList(dic):
@@ -126,14 +130,20 @@ class YoutubeScraper():
         print("Download Complete! ")
 
     def DownloadVideoURL(URL):
-        yt = YouTube(URL)
+        try:
+            yt = YouTube(URL)
+        except RegexMatchError:
+            print("Video CopyRighted, you can't download it!")
         print(yt.title)
         print("Downloading..................... ")
         yt.streams.filter(progressive=True).first().download()
         print("Download Complete! ")
 
     def DownloadAudioURL(URL):
-        yt = YouTube(URL)
+        try:
+            yt = YouTube(URL)
+        except RegexMatchError:
+            print("Video CopyRighted, you can't download it!")
         print(yt.title)
         print("Downloading..................... ")
         yt.streams.filter(only_audio=True).first().download()
